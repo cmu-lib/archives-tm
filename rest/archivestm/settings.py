@@ -30,6 +30,8 @@ ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "physical.apps.PhysicalConfig",
+    "metadata.apps.MetadataConfig",
+    "text.apps.TextConfig",
     "rest_framework",
     "django.contrib.auth",
     "django.contrib.contenttypes",

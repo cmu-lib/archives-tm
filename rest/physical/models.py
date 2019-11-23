@@ -9,7 +9,7 @@ Abstract models
 
 class uuidModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    label = models.CharField(null=True, blank=False, max_length=400)
+    label = models.CharField(null=True, blank=False, max_length=1000, default=id)
 
     class Meta:
         abstract = True
@@ -32,7 +32,9 @@ Materialized models
 
 
 class Box(sequentialModel):
-    pass
+    collection = models.ForeignKey(
+        "metadata.Collection", on_delete=models.CASCADE, related_name="boxes"
+    )
 
 
 class Folder(sequentialModel):
@@ -48,17 +50,18 @@ class Document(sequentialModel):
         Bundle, on_delete=models.CASCADE, related_name="documents"
     )
     fulltext = models.TextField(null=False, blank=True, editable=False)
+    pdf = models.CharField(null=True, blank=False, max_length=800)
 
 
 class Page(sequentialModel):
+    tiff = models.CharField(null=True, blank=False, max_length=800)
     document = models.ForeignKey(
-        Document, on_delete=models.CASCADE, related_name="document"
+        Document, on_delete=models.CASCADE, related_name="pages"
     )
-    image = models.CharField(null=True, blank=False, max_length=800)
 
     @property
     def iiif_base(self):
-        return settings.IMAGE_BASEURL + self.image
+        return settings.IMAGE_BASEURL + self.tiff
 
     @property
     def iiif_info(self):

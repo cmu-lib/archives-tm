@@ -6,7 +6,8 @@ services:
     command: "python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./rest:/vol/app:z
-      - archivestmdb:/vol/static_files:z
+      - archivestmdjango:/vol/static_files:z
+      - ${REAL_IMAGE_DIR}:/simon
     expose:
       - 8000
     links:
@@ -30,6 +31,7 @@ services:
       - "iiif:iiif"
     volumes:
       - ./nginx:/etc/nginx/conf.d
+      - archivestmdjango:/vol/static_files
     ports:
       - "80:80"
     env_file: .env

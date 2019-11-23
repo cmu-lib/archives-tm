@@ -9,7 +9,7 @@ down:
 attach:
 	docker-compose exec rest bash
 db:
-	docker-compose exec postgres psql -U app -d pp
+	docker-compose exec postgres psql -U app -d archivestm
 restart:
 	docker-compose restart rest nginx
 check:
