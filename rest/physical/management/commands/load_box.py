@@ -12,9 +12,13 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("box_path", nargs="+", type=str)
+        parser.add_argument(
+            "--wipe", action="store_true", help="Wipe all boxes before loading"
+        )
 
     def handle(self, *args, **options):
-        models.Box.objects.all().delete()
+        if options["wipe"]:
+            models.Box.objects.all().delete()
         collection = Collection.objects.get_or_create(
             label="Herbert A. Simon Collection -- (1909, 1924) 1929-1998"
         )[0]

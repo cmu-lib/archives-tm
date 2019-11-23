@@ -24,18 +24,26 @@ class BundleSerializer(serializers.ModelSerializer):
         fields = ["url", "id", "label", "sequence", "folder"]
 
 
+class PageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Page
+        fields = ["url", "id", "label", "sequence", "image"]
+
+
 class DocumentSerializer(serializers.ModelSerializer):
     bundle = BundleSerializer()
+    pages = PageSerializer(many=True)
 
     class Meta:
         model = models.Document
-        fields = ["url", "id", "label", "sequence", "bundle", "pdf", "fulltext"]
-
-
-class PageSerializer(serializers.ModelSerializer):
-    document = DocumentSerializer()
-
-    class Meta:
-        model = models.Page
-        fields = ["url", "id", "label", "sequence", "document", "image"]
+        fields = [
+            "url",
+            "id",
+            "label",
+            "sequence",
+            "bundle",
+            "pdf",
+            "fulltext",
+            "pages",
+        ]
 
