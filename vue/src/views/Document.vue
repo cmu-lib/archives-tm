@@ -5,7 +5,7 @@
         <DocumentData :document="document" />
       </b-col>
       <b-col cols="9">
-        <IIIFSequence :info_urls="page_urls" />
+        <IIIFSequence :id="document_id + 'image'" :info_urls="page_urls" />
       </b-col>
     </b-row>
   </b-container>
@@ -22,10 +22,7 @@ export default {
     IIIFSequence
   },
   props: {
-    document_id: {
-      type: String,
-      default: null
-    }
+    document_id: String
   },
   asyncComputed: {
     document() {

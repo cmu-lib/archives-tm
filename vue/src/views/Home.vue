@@ -3,9 +3,10 @@
     <h1>Simon TM</h1>
     <p>A prototype application for document clustering in teh context of archival collections.</p>
     <b-card title="Boxes">
-      <b-list-group>
+      <b-list-group v-if="boxes">
         <b-list-group-item v-for="box in boxes" :key="box.id">
-          <router-link :href="box.id">{{ box.label }}</router-link>
+          <router-link :to="{name: 'BoxView', params: {box_id:
+          box.id}}">{{ box.label }}</router-link>
         </b-list-group-item>
       </b-list-group>
     </b-card>
@@ -18,9 +19,9 @@ export default {
   name: "home",
   asyncComputed: {
     boxes() {
-      HTTP.get("boxes/").then(
+      return HTTP.get("/boxes/").then(
         response => {
-          return response.data;
+          return response.data.results;
         },
         error => {
           console.log(error);

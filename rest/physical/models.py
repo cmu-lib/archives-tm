@@ -52,6 +52,10 @@ class Document(sequentialModel):
     fulltext = models.TextField(null=False, blank=True, editable=False)
     pdf = models.CharField(null=True, blank=False, max_length=800)
 
+    @property
+    def n_pages(self):
+        return self.pages.count()
+
 
 class Page(sequentialModel):
     tiff = models.CharField(null=True, blank=False, max_length=800)

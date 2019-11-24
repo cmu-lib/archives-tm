@@ -14,6 +14,9 @@ export default {
     },
     info_urls: Array
   },
+  data() {
+    return { viewer: null };
+  },
   computed: {
     options() {
       return {
@@ -21,9 +24,13 @@ export default {
         prefixUrl: "/osd/",
         tileSources: this.info_urls,
         maxZoomLevel: 3,
+        panHorizontal: false,
+        defaultZoomLevel: 1,
+        minZoomLevel: 1,
+        visibilityRatio: 1,
         sequenceMode: true,
-        preserveViewport: true,
-        showReferenceStrip: true,
+        preserveViewport: false,
+        showReferenceStrip: false,
         // Show rotation buttons
         showRotationControl: true,
         // Enable touch rotation on tactile devices
@@ -34,10 +41,13 @@ export default {
     }
   },
   mounted() {
-    OpenSeadragon(this.options);
+    this.viewer = OpenSeadragon(this.options);
   },
-  updated() {
-    OpenSeadragon(this.options);
+  watch: {
+    info_urls() {
+      this.viewer.destroy();
+      this.viewer = OpenSeadragon(this.options);
+    }
   }
 };
 </script>
