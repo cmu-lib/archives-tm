@@ -1,6 +1,5 @@
 <template>
-  <b-card>
-    <h2>{{ document.label }}</h2>
+  <b-card :header="document.label">
     <p>{{ document.n_pages }} page(s)</p>
     <p>Created: {{ document.date_created_text }}</p>
     <p>Coverage: {{ document.coverage_text }}</p>
@@ -20,7 +19,7 @@ export default {
 
 <style>
 p.document-fulltext {
-  height: 500px;
+  height: 100vh;
   overflow-y: scroll;
 }
 </style>

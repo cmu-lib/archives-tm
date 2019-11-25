@@ -2,7 +2,7 @@
   <b-row>
     <b-col cols="3">
       <h1>{{ box.label }}</h1>
-      <b-list-group>
+      <b-list-group class="boxlist">
         <b-list-group-item v-for="folder in box.folders" :key="folder.id">
           <Folder :folder_label="folder.label" :folder_id="folder.id" />
         </b-list-group-item>
@@ -39,3 +39,10 @@ export default {
   }
 };
 </script>
+
+<style lang="css">
+.boxlist {
+  height: 100vh;
+  overflow: scroll;
+}
+</style>

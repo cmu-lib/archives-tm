@@ -1,13 +1,15 @@
 <template>
   <div>
     <span>
+      <b-button @click="visible=!visible" size="sm">{{ sigil }}</b-button>
       {{ folder_label }}
-      <b-button @click="visible=!visible" size="sm">+</b-button>
     </span>
     <b-collapse v-model="visible">
-      <b-list-group v-if="folder">
-        <b-list-group-item v-for="bundle in folder.bundles" :key="bundle.id">
-          <Bundle :bundle_label="bundle.label" :bundle_id="bundle.id" />
+      <b-list-group v-if="folder" flush>
+        <b-list-group-item v-for="document in documents" :key="document.id">
+          <router-link
+            :to="{name: 'DocumentDetailView', params: {document_id: document.id}}"
+          >{{ document.label }}</router-link>
         </b-list-group-item>
       </b-list-group>
     </b-collapse>
@@ -16,12 +18,8 @@
 
 <script>
 import { HTTP } from "../main";
-import Bundle from "./Bundle";
 export default {
   name: "folder",
-  components: {
-    Bundle
-  },
   props: {
     folder_label: String,
     folder_id: String
@@ -45,6 +43,19 @@ export default {
       } else {
         return null;
       }
+    }
+  },
+  computed: {
+    sigil() {
+      if (this.visible) {
+        return "-";
+      } else {
+        return "+";
+      }
+    },
+    documents() {
+      // Create a flat list of all the documents in the folder, bypassing the bundle hierarchy
+      return this.folder.bundles.map(x => x.documents).flat(Infinity);
     }
   }
 };

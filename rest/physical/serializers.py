@@ -20,16 +20,18 @@ class FolderListSerializer(serializers.ModelSerializer):
         fields = ["url", "id", "label", "sequence"]
 
 
-class BundleListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Bundle
-        fields = ["url", "id", "label", "sequence"]
-
-
 class DocumentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Document
         fields = ["url", "id", "label", "sequence", "pdf", "n_pages"]
+
+
+class BundleListSerializer(serializers.ModelSerializer):
+    documents = DocumentListSerializer(many=True)
+
+    class Meta:
+        model = models.Bundle
+        fields = ["url", "id", "label", "sequence", "documents"]
 
 
 class BoxDetailSerializer(serializers.ModelSerializer):

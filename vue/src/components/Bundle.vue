@@ -1,11 +1,11 @@
 <template>
   <div>
     <span>
-      {{ bundle_label }}
       <b-button @click="visible=!visible" size="sm">+</b-button>
+      {{ bundle_label }}
     </span>
     <b-collapse v-model="visible">
-      <b-list-group v-if="bundle">
+      <b-list-group v-if="bundle" flush>
         <b-list-group-item v-for="document in bundle.documents" :key="document.id">
           <router-link
             :to="{name: 'DocumentDetailView', params: {document_id: document.id}}"

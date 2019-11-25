@@ -1,11 +1,11 @@
 <template>
-  <b-container fluid v-if="document">
+  <b-container fluid v-if="document" class="doccontainer">
     <b-row>
-      <b-col cols="3">
-        <DocumentData :document="document" />
-      </b-col>
       <b-col cols="9">
         <IIIFSequence :id="document_id + 'image'" :info_urls="page_urls" />
+      </b-col>
+      <b-col cols="3">
+        <DocumentData :document="document" />
       </b-col>
     </b-row>
   </b-container>
@@ -43,3 +43,6 @@ export default {
   }
 };
 </script>
+
+<style lang="css">
+</style>
