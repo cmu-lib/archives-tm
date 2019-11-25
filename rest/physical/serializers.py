@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from physical import models
+from metadata.serializers import RecordSerializer
 
 
 class PageSerializer(serializers.ModelSerializer):
@@ -21,9 +22,11 @@ class FolderListSerializer(serializers.ModelSerializer):
 
 
 class DocumentListSerializer(serializers.ModelSerializer):
+    record = RecordSerializer()
+
     class Meta:
         model = models.Document
-        fields = ["url", "id", "label", "sequence", "pdf", "n_pages"]
+        fields = ["url", "id", "label", "sequence", "pdf", "n_pages", "record"]
 
 
 class BundleListSerializer(serializers.ModelSerializer):
@@ -63,6 +66,7 @@ class BundleDetailSerializer(serializers.ModelSerializer):
 class DocumentDetailSerializer(serializers.ModelSerializer):
     bundle = BundleListSerializer()
     pages = PageSerializer(many=True)
+    record = RecordSerializer()
 
     class Meta:
         model = models.Document
@@ -76,5 +80,6 @@ class DocumentDetailSerializer(serializers.ModelSerializer):
             "fulltext",
             "pages",
             "n_pages",
+            "record",
         ]
 

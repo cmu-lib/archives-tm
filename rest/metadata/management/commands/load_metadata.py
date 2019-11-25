@@ -65,8 +65,10 @@ class Command(BaseCommand):
                 folder = document.bundle.folder
                 folder.label = row["browse4"]
                 folder.save()
+                record_title = row["title"].split("(")[0]
                 models.DocumentRecord.objects.create(
                     document=document,
+                    label=record_title,
                     document_format=docformat,
                     document_subject=docsubject,
                     created_date_text=row["created_date"],

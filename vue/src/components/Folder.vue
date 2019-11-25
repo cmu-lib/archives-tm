@@ -9,7 +9,7 @@
         <b-list-group-item v-for="document in documents" :key="document.id">
           <router-link
             :to="{name: 'DocumentDetailView', params: {document_id: document.id}}"
-          >{{ document.label }}</router-link>
+          >{{ document.record.label }}</router-link>
         </b-list-group-item>
       </b-list-group>
     </b-collapse>
