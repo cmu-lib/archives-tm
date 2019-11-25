@@ -18,9 +18,13 @@ class DocumentRecord(uuidModel):
         Document, on_delete=models.CASCADE, related_name="record"
     )
     document_format = models.ForeignKey(
-        "DocumentFormat", on_delete=models.CASCADE, related_name="records"
+        "DocumentFormat", on_delete=models.CASCADE, related_name="records", null=True
+    )
+    document_subject = models.ForeignKey(
+        "DocumentSubject", on_delete=models.CASCADE, related_name="records", null=True
     )
     created_date_text = models.CharField(blank=True, null=False, max_length=1000)
+    coverage_text = models.CharField(blank=True, null=False, max_length=1000)
     document_subject_text = models.CharField(blank=True, null=False, max_length=1000)
 
 
