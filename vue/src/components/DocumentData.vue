@@ -1,7 +1,7 @@
 <template>
   <b-card :header="document.label">
     <p>{{ document.n_pages }} page(s)</p>
-    <p>Created: {{ document.record.date_created_text }}</p>
+    <p>Created: {{ document.record.created_date_text }}</p>
     <p>Coverage: {{ document.record.coverage_text }}</p>
     <hr />
     <p class="document-fulltext">{{ document.fulltext }}</p>

@@ -14,6 +14,9 @@ class uuidModel(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return self.label
+
 
 class sequentialModel(uuidModel):
     sequence = models.PositiveIntegerField(db_index=True)

@@ -29,8 +29,8 @@ class DocumentRecord(uuidModel):
 
 
 class DocumentFormat(uuidModel):
-    pass
+    label = models.CharField(unique=True, max_length=800)
 
 
 class DocumentSubject(uuidModel):
-    pass
+    label = models.CharField(unique=True, max_length=800)

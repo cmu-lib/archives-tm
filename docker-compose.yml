@@ -8,6 +8,7 @@ services:
       - ./rest:/vol/app:z
       - archivestmdjango:/vol/static_files:z
       - ${REAL_IMAGE_DIR}:/simon
+      - archivesmodels:/vol/models
     expose:
       - 8000
     links:
@@ -48,3 +49,4 @@ services:
 volumes:
   archivestmdb:
   archivestmdjango:
+  archivesmodels:

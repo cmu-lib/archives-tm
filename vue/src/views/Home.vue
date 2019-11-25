@@ -1,7 +1,7 @@
 <template>
   <b-container>
     <h1>Simon TM</h1>
-    <p>A prototype application for document clustering in teh context of archival collections.</p>
+    <p>A prototype application for document clustering in the context of archival collections.</p>
     <b-card title="Boxes">
       <b-list-group v-if="boxes">
         <b-list-group-item v-for="box in boxes" :key="box.id">

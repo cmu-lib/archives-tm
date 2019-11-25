@@ -133,7 +133,10 @@ class Topic(uuidModel):
     terms = ArrayField(models.CharField(max_length=100))
     index = models.PositiveIntegerField()
     documents = models.ManyToManyField(
-        Document, through="DocumentTopic", through_fields=("topic", "document")
+        Document,
+        through="DocumentTopic",
+        through_fields=("topic", "document"),
+        related_name="topics",
     )
 
     class Meta:
@@ -142,6 +145,10 @@ class Topic(uuidModel):
 
 
 class DocumentTopic(models.Model):
-    document = models.ForeignKey(Document, on_delete=models.CASCADE)
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    document = models.ForeignKey(
+        Document, on_delete=models.CASCADE, related_name="topic_relationship"
+    )
+    topic = models.ForeignKey(
+        Topic, on_delete=models.CASCADE, related_name="document_relationship"
+    )
     log = models.FloatField(db_index=True)
