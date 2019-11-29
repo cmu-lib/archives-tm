@@ -48,10 +48,10 @@ class TopicModelSerializer(serializers.ModelSerializer):
             "passes",
             "iterations",
             "min_count",
-            "no_below",
             "no_above",
+            "is_calculated",
         ]
-        read_only_fields = ["created_model", "topics"]
+        read_only_fields = ["created_model", "topics", "is_calculated"]
 
 
 class DocumentTopicSerializer(serializers.ModelSerializer):

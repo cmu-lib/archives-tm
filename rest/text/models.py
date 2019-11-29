@@ -1,6 +1,7 @@
 from django.db import models
 from physical.models import Document, uuidModel
 from django.contrib.postgres.fields import ArrayField
+from nltk import word_tokenize
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.corpus import stopwords
@@ -25,13 +26,12 @@ class TopicModel(UserCreatedModel):
     passes = models.PositiveIntegerField(default=20)
     iterations = models.PositiveIntegerField(default=40)
     min_count = models.PositiveIntegerField(default=10)
-    no_below = models.PositiveIntegerField(default=10)
     no_above = models.FloatField(default=0.5)
 
     def run(self, overwrite=False):
         if self.is_calculated and overwrite is False:
             print(
-                f"{self} has already saved a model at {self.created_model}. Run with `overwrite=True` to revise the model"
+                f"{self} has already saved a model at {self.created_model}. Run with `overwrite=True` to overwrite the model"
             )
             return None
 
@@ -46,10 +46,10 @@ class TopicModel(UserCreatedModel):
         self.save()
 
         # Split the documents into tokens.
-        tokenizer = RegexpTokenizer(r"\w+")
+        # tokenizer = word_tokenize()
         for idx in range(len(docs)):
             docs[idx] = docs[idx].lower()  # Convert to lowercase.
-            docs[idx] = tokenizer.tokenize(docs[idx])  # Split into words.
+            docs[idx] = word_tokenize(docs[idx])  # Split into words.
 
         # Remove numbers, but not words that contain numbers.
         docs = [[token for token in doc if not token.isnumeric()] for doc in docs]
@@ -80,7 +80,7 @@ class TopicModel(UserCreatedModel):
         dictionary = Dictionary(docs)
 
         # Filter out words that occur less than 20 documents, or more than 50% of the documents.
-        dictionary.filter_extremes(no_below=self.no_below, no_above=self.no_above)
+        dictionary.filter_extremes(no_below=self.min_count, no_above=self.no_above)
 
         # Bag-of-words representation of the documents.
         corpus = [dictionary.doc2bow(doc) for doc in docs]
@@ -104,7 +104,6 @@ class TopicModel(UserCreatedModel):
             iterations=iterations,
             num_topics=num_topics,
             passes=passes,
-            eval_every=eval_every,
         )
         instance_path = f"{self.MODEL_PATH}/{self.id}.mm"
         model.save(instance_path)
@@ -127,6 +126,8 @@ class TopicModel(UserCreatedModel):
                     topic=topic_objects[ti],
                     log=t[1],
                 )
+
+        return self.created_model
 
     @property
     def is_calculated(self):

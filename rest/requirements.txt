@@ -9,3 +9,4 @@ django-filter
 tqdm
 nltk
 gensim
+celery

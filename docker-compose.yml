@@ -13,9 +13,16 @@ services:
       - 8000
     links:
       - "postgres:postgres"
+      - "rabbitmq:rabbitmq"
     env_file: .env
     depends_on:
       - postgres
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq
+    expose:
+      - 5462
 
   postgres:
     image: postgres:12

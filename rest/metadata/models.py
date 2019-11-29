@@ -31,6 +31,12 @@ class DocumentRecord(uuidModel):
 class DocumentFormat(uuidModel):
     label = models.CharField(unique=True, max_length=800)
 
+    class Meta:
+        ordering = ["label"]
+
 
 class DocumentSubject(uuidModel):
     label = models.CharField(unique=True, max_length=800)
+
+    class Meta:
+        ordering = ["label"]

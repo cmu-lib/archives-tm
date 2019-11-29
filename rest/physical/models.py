@@ -88,7 +88,7 @@ class Page(sequentialModel):
 
     @property
     def thumbnail_image(self):
-        return f"{self.iiif_base}/full/500,/0/default.jpg"
+        return f"{self.iiif_base}/full/200,/0/default.jpg"
 
     @property
     def image(self):

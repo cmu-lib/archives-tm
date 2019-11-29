@@ -8,13 +8,13 @@ from physical.models import Document
 from physical.views import GetSerializerClassMixin, DocumentFilter
 from rest_framework.decorators import action
 from django_filters import rest_framework as filters
+from text.tasks import generate_model
 
 
 class TopicModelViewset(GetSerializerClassMixin, viewsets.ModelViewSet):
     queryset = models.TopicModel.objects.all()
     serializer_class = serializers.TopicModelSerializer
 
-    @transaction.atomic
     @action(detail=True, methods=["post"])
     def load_model(self, request, pk=None):
         tm = self.get_object()
@@ -26,7 +26,8 @@ class TopicModelViewset(GetSerializerClassMixin, viewsets.ModelViewSet):
         if doc_count > 0:
             tm.documents.set(filtered_documents)
             tm.save()
-            return Response({"id": tm.id, "docs_added": doc_count)})
+            generate_model(tm)
+            return Response({"id": tm.id, "docs_added": doc_count})
         else:
             return Response(
                 {"non_field_error": "Filter returned 0 documents."},
@@ -62,6 +63,6 @@ class DocumentTopicFilter(filters.FilterSet):
 
 
 class DocumentTopicViewset(viewsets.ModelViewSet):
-    queryset = models.DocumentTopic.objects.order_by("-log").distinct()
+    queryset = models.DocumentTopic.objects.order_by("log").distinct()
     serializer_class = serializers.DocumentTopicSerializer
     filterset_class = DocumentTopicFilter
