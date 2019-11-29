@@ -23,10 +23,21 @@ class FolderListSerializer(serializers.ModelSerializer):
 
 class DocumentListSerializer(serializers.ModelSerializer):
     record = RecordSerializer()
+    first_page = PageSerializer()
 
     class Meta:
         model = models.Document
-        fields = ["url", "id", "label", "sequence", "pdf", "n_pages", "record"]
+        fields = [
+            "url",
+            "id",
+            "box",
+            "label",
+            "sequence",
+            "pdf",
+            "n_pages",
+            "record",
+            "first_page",
+        ]
 
 
 class BundleListSerializer(serializers.ModelSerializer):

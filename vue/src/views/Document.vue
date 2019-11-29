@@ -1,10 +1,10 @@
 <template>
   <b-container fluid v-if="document" class="doccontainer">
     <b-row>
-      <b-col cols="9">
+      <b-col cols="8">
         <IIIFSequence :id="document_id + 'image'" :info_urls="page_urls" />
       </b-col>
-      <b-col cols="3">
+      <b-col cols="4">
         <DocumentData :document="document" />
       </b-col>
     </b-row>

@@ -2,6 +2,7 @@ from django import forms
 from rest_framework import serializers
 from text import models
 from physical import models as physical_models
+from physical.serializers import DocumentListSerializer
 from django_filters import rest_framework as filters
 
 
@@ -16,7 +17,7 @@ class TopicFilter(filters.FilterSet):
 class TopicListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Topic
-        fields = ["id", "url"]
+        fields = ["id", "url", "terms"]
         filterset_class = TopicFilter
 
 
@@ -33,9 +34,29 @@ class TopicModelFilter(filters.FilterSet):
 
 
 class TopicModelSerializer(serializers.ModelSerializer):
-    topics = TopicListSerializer(many=True)
+    topics = TopicListSerializer(many=True, read_only=True)
 
     class Meta:
         model = models.TopicModel
-        fields = ["id", "url", "n_topics", "created_model", "topics"]
-        filterset_class = TopicModelFilter
+        fields = [
+            "id",
+            "url",
+            "n_topics",
+            "topics",
+            "n_topics",
+            "chunksize",
+            "passes",
+            "iterations",
+            "min_count",
+            "no_below",
+            "no_above",
+        ]
+        read_only_fields = ["created_model", "topics"]
+
+
+class DocumentTopicSerializer(serializers.ModelSerializer):
+    document = DocumentListSerializer()
+
+    class Meta:
+        model = models.DocumentTopic
+        fields = ["document", "topic", "log"]

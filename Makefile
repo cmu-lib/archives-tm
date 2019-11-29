@@ -6,6 +6,8 @@ stop:
 	docker-compose stop rest
 down:
 	docker-compose down
+serve:
+	cd vue; npm run serve
 attach:
 	docker-compose exec rest bash
 db:

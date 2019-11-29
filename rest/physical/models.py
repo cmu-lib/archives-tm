@@ -59,6 +59,14 @@ class Document(sequentialModel):
     def n_pages(self):
         return self.pages.count()
 
+    @property
+    def first_page(self):
+        return self.pages.first()
+
+    @property
+    def box(self):
+        return self.bundle.folder.box.id
+
 
 class Page(sequentialModel):
     tiff = models.CharField(null=True, blank=False, max_length=800)

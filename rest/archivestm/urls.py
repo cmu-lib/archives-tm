@@ -13,6 +13,7 @@ router.register(r"documents", physical_views.DocumentViewSet)
 router.register(r"pages", physical_views.PageViewSet)
 router.register(r"topic_models", text_views.TopicModelViewset)
 router.register(r"topics", text_views.TopicViewset)
+router.register(r"document_topic_relations", text_views.DocumentTopicViewset)
 router.register(r"document_formats", metadata_views.DocumentFormatViewset)
 router.register(r"document_subjects", metadata_views.DocumentSubjectSerializer)
 

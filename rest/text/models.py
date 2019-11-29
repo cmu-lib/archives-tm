@@ -15,10 +15,18 @@ class UserCreatedModel(uuidModel):
 
 class TopicModel(UserCreatedModel):
     MODEL_PATH = "/vol/models"
-    documents = models.ManyToManyField(Document, related_name="topic_models")
-    n_topics = models.PositiveIntegerField()
-    created_model = models.FilePathField(path=MODEL_PATH, null=True)
-    document_ids = ArrayField(models.UUIDField())
+    documents = models.ManyToManyField(
+        Document, related_name="topic_models", editable=False
+    )
+    created_model = models.FilePathField(path=MODEL_PATH, null=True, editable=False)
+    document_ids = ArrayField(models.UUIDField(), null=True, editable=False)
+    n_topics = models.PositiveIntegerField(default=10)
+    chunksize = models.PositiveIntegerField(default=2000)
+    passes = models.PositiveIntegerField(default=20)
+    iterations = models.PositiveIntegerField(default=40)
+    min_count = models.PositiveIntegerField(default=10)
+    no_below = models.PositiveIntegerField(default=10)
+    no_above = models.FloatField(default=0.5)
 
     def run(self, overwrite=False):
         if self.is_calculated and overwrite is False:
@@ -61,7 +69,7 @@ class TopicModel(UserCreatedModel):
         #  Compute bigrams.
 
         # Add bigrams and trigrams to docs (only ones that appear 20 times or more).
-        bigram = Phrases(docs, min_count=20)
+        bigram = Phrases(docs, min_count=self.min_count)
         for idx in range(len(docs)):
             for token in bigram[docs[idx]]:
                 if "_" in token:
@@ -72,17 +80,16 @@ class TopicModel(UserCreatedModel):
         dictionary = Dictionary(docs)
 
         # Filter out words that occur less than 20 documents, or more than 50% of the documents.
-        dictionary.filter_extremes(no_below=20, no_above=0.5)
+        dictionary.filter_extremes(no_below=self.no_below, no_above=self.no_above)
 
         # Bag-of-words representation of the documents.
         corpus = [dictionary.doc2bow(doc) for doc in docs]
 
         # Set training parameters.
-        num_topics = 10
-        chunksize = 2000
-        passes = 20
-        iterations = 400
-        eval_every = None  # Don't evaluate model perplexity, takes too much time.
+        num_topics = self.n_topics
+        chunksize = self.chunksize
+        passes = self.passes
+        iterations = self.iterations
 
         # Make a index to word dictionary.
         temp = dictionary[0]  # This is only to "load" the dictionary.
@@ -123,7 +130,7 @@ class TopicModel(UserCreatedModel):
 
     @property
     def is_calculated(self):
-        return self.created_model is None
+        return self.created_model is not None
 
 
 class Topic(uuidModel):

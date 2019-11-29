@@ -1,5 +1,5 @@
 <template>
-  <b-card :header="document.label">
+  <b-card :header="document.label" class="document-container">
     <p>{{ document.n_pages }} page(s)</p>
     <p>Created: {{ document.record.created_date_text }}</p>
     <p>Coverage: {{ document.record.coverage_text }}</p>
@@ -18,8 +18,11 @@ export default {
 </script>
 
 <style>
+.document-container {
+}
+
 p.document-fulltext {
-  height: 100vh;
+  height: 500px;
   overflow-y: scroll;
 }
 </style>

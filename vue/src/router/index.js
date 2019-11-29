@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Box from '../views/Box.vue'
 import Document from '../views/Document.vue'
+import TopicModelList from "../views/TopicModelList.vue"
+import TopicModel from "../views/TopicModel.vue"
 
 Vue.use(VueRouter)
 
@@ -25,6 +27,17 @@ const routes = [
         props: (route) => ({ document_id: route.params.document_id })
       }
     ]
+  },
+  {
+    path: '/topic_models',
+    name: 'TopicModelList',
+    component: TopicModelList,
+  },
+  {
+    path: '/topic/models/:topic_model_id',
+    name: 'TopicModel',
+    component: TopicModel,
+    props: (route) => ({ topic_model_id: route.params.topic_model_id })
   },
 ]
 
