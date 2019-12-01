@@ -2,9 +2,11 @@
   <b-row>
     <b-col cols="3">
       <b-list-group>
-        <b-list-group-item v-for="tm in topic_models" :key="tm.id">
-          <TopicModelCard :tm="tm" />
-        </b-list-group-item>
+        <transition-group name="mylist" tag="ul" class="list-group">
+          <li class="list-group-item mylist-item" v-for="tm in topic_models" :key="tm.id">
+            <TopicModelCard :tm="tm" @delete="delete_tm($event)" @run="rum_tm($event)" />
+          </li>
+        </transition-group>
       </b-list-group>
     </b-col>
     <b-col cols="9">
@@ -75,6 +77,7 @@ import { HTTP } from "../main";
 import SubjectMenu from "../components/SubjectMenu";
 import FormatMenu from "../components/FormatMenu";
 import TopicModelCard from "../components/TopicModelCard";
+
 export default {
   name: "TopicModelList",
   components: {
@@ -93,7 +96,10 @@ export default {
       min_count: 10,
       no_above: 0.5,
       submitted_model: {},
-      topic_models: []
+      topic_models: [],
+      addresses: [],
+      addressSearch: "",
+      selectedAddress: null
     };
   },
   asyncComputed: {
@@ -124,6 +130,31 @@ export default {
     }
   },
   methods: {
+    run_tm: function(tm_id) {
+      HTTP.delete("/topic_models/" + tm_id + "/").then(
+        results => {
+          return results;
+        },
+        error => {
+          console.log(error);
+        }
+      );
+      this.refresh_topic_models();
+    },
+    delete_tm: function(tm_id) {
+      HTTP.delete("/topic_models/" + tm_id + "/").then(
+        results => {
+          this.refresh_topic_models();
+          return results;
+        },
+        error => {
+          console.log(error);
+        }
+      );
+      // this.topic_models = _.remove(this.topic_models, x => {
+      //   return x.id == tm_id;
+      // });
+    },
     refresh_topic_models() {
       HTTP.get("/topic_models/").then(
         results => {
@@ -179,3 +210,14 @@ export default {
   }
 };
 </script>
+
+<style lang="css">
+.mylist-item {
+  transition: 0.5s all;
+}
+
+.mylist-enter,
+.mylist-leave-to {
+  opacity: 0;
+}
+</style>

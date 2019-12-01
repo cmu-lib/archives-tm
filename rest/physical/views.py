@@ -65,7 +65,7 @@ class DocumentFilter(filters.FilterSet):
         queryset=metadata_models.DocumentSubject.objects.all(),
         field_name="record__document_subject",
     )
-    label = filters.CharFilter()
+    label = filters.CharFilter(lookup_expr="icontains")
     topics = filters.ModelChoiceFilter(queryset=text_models.Topic.objects.all())
 
 

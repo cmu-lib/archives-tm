@@ -15,8 +15,17 @@
 
 <script>
 import { HTTP } from "../main";
+import Autocomplete from "../components/Autocomplete";
 export default {
   name: "home",
+  components: {
+    Autocomplete
+  },
+  data() {
+    return {
+      doc: ""
+    };
+  },
   asyncComputed: {
     boxes() {
       return HTTP.get("/boxes/").then(

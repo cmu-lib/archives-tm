@@ -46,10 +46,10 @@ class TopicModel(UserCreatedModel):
         self.save()
 
         # Split the documents into tokens.
-        # tokenizer = word_tokenize()
+        tokenizer = RegexpTokenizer(r"\w+")
         for idx in range(len(docs)):
             docs[idx] = docs[idx].lower()  # Convert to lowercase.
-            docs[idx] = word_tokenize(docs[idx])  # Split into words.
+            docs[idx] = tokenizer.tokenize(docs[idx])  # Split into words.
 
         # Remove numbers, but not words that contain numbers.
         docs = [[token for token in doc if not token.isnumeric()] for doc in docs]
