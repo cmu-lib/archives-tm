@@ -25,7 +25,7 @@ services:
       - 5462
 
   postgres:
-    image: postgres:12
+    image: postgres:12.1
     volumes:
       - archivestmdb:/var/lib/postgresql/data:z
     expose:
